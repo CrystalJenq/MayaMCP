@@ -125,6 +125,8 @@ Maya 視窗中會同步出現執行結果。
 
 `Script_maya/build_trex.py` 是一個完整範例，展示如何用 `maya.cmds` 的基本幾何體（polyCube、polySphere）組合出一隻 T-Rex。
 
+![T-Rex in Maya](images/trex_preview.png)
+
 將 `SCRIPT_PATH` 指向此檔案後執行，Maya 場景中會出現 `T_Rex_GRP`，包含：
 
 - 身體、胸部、臀部
