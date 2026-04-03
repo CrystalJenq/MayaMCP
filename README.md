@@ -6,14 +6,45 @@
 
 ## 工作原理
 
+```mermaid
+flowchart TD
+    A[VSCode\n編寫 Python 腳本] -->|修改 SCRIPT_PATH| B[run_maya_script_from_vsc.py]
+    B -->|TCP Socket\nlocalhost:7001| C[Maya commandPort\nsourceType=python]
+    C --> D[Maya 2026\n執行腳本]
+    D -->|回傳執行結果| B
+
+    E[Script_maya/VSCmayaPort.py\n開啟 port 7001] -.->|每次啟動 Maya 先執行| C
+
+    subgraph VSCode 端
+        A
+        B
+    end
+
+    subgraph Maya 端
+        C
+        D
+        E
+    end
+```
+
+### 文字版
+
 ```
 VSCode 編輯 .py 腳本
-        ↓
-run_maya_script_from_vsc.py（TCP Socket）
-        ↓
-localhost:7001（Maya commandPort — Python 模式）
-        ↓
+        |
+        | 修改 SCRIPT_PATH
+        v
+run_maya_script_from_vsc.py  <---  TCP Socket 回傳結果
+        |
+        | TCP Socket  localhost:7001
+        v
+Maya commandPort (Python 模式)
+        |
+        v
 Maya 2026 執行腳本
+        ^
+        |  每次啟動 Maya 先執行
+Script_maya/VSCmayaPort.py
 ```
 
 ---
