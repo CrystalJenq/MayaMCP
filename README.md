@@ -52,7 +52,7 @@ Maya 2026 執行腳本
 
 ```python
 # 修改這裡，指向你想在 Maya 中執行的腳本
-SCRIPT_PATH = r"i:\code_jenq\VSC_Maya\build_bus.py"
+SCRIPT_PATH = r"i:\code_jenq\VSC_Maya\vscmayatest.py"
 ```
 
 ---
@@ -70,7 +70,7 @@ python run_maya_script_from_vsc.py
 ```
 Attempting to connect to Maya (Port: 7001)...
 Connection successful!
-Reading script: 'i:\code_jenq\VSC_Maya\build_bus.py'
+Reading script: 'i:\code_jenq\VSC_Maya\vscmayatest.py'
 Sending script to Maya for execution...
 --- Script execution complete ---
 ```
@@ -85,11 +85,7 @@ Maya 視窗中會同步出現執行結果。
 |------|------|
 | `Script_maya/VSCmayaPort.py` | 在 Maya 內開啟 port 7001，每次啟動 Maya 必須先執行 |
 | `run_maya_script_from_vsc.py` | VSCode 端的傳送工具，修改 `SCRIPT_PATH` 指向目標腳本後執行 |
-| `build_bus.py` | 範例：程序化建立公車與 Porsche 911 模型 |
-| `list_outliner_info.py` | 列出場景中所有物件的名稱、類型與可見性 |
-| `open_uv_editor.py` | 開啟 Maya UV Editor 視窗 |
-| `select_all_faces.py` | 選取場景中所有 mesh 的面 |
-| `select_all_meshes.py` | 選取場景中所有 mesh 物件 |
+| `vscmayatest.py` | 連線測試腳本，確認 VSCode → Maya 通道是否正常 |
 
 ---
 
