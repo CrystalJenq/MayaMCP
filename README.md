@@ -11,7 +11,7 @@ VSCode 編輯 .py 腳本
         ↓
 run_maya_script_from_vsc.py（TCP Socket）
         ↓
-localhost:7001（Maya commandPort）
+localhost:7001（Maya commandPort — Python 模式）
         ↓
 Maya 2026 執行腳本
 ```
@@ -39,7 +39,7 @@ Maya 2026 執行腳本
 5. 看到以下訊息代表成功：
 
 ```
---- 設定完成！通訊埠 :7001 已在 MEL 模式下成功開啟。Maya 已準備就緒。 ---
+--- 設定完成！通訊埠 :7001 已在 Python 模式下成功開啟。Maya 已準備就緒。 ---
 ```
 
 > **注意：** 只要 Maya 沒有關閉，此步驟只需執行一次。重開 Maya 後需再次執行。
@@ -48,11 +48,11 @@ Maya 2026 執行腳本
 
 ### Step 2：在 VSCode 設定要執行的腳本路徑
 
-開啟 `run_maya_script_from_vsc.py`，修改第 7 行的 `SCRIPT_PATH`，指向你想執行的 Python 腳本：
+開啟 `run_maya_script_from_vsc.py`，修改 `SCRIPT_PATH`，指向你想執行的 Python 腳本：
 
 ```python
 # 修改這裡，指向你想在 Maya 中執行的腳本
-SCRIPT_PATH = r"i:\code_jenq\VSC_Maya\vscmayatest.py"
+SCRIPT_PATH = r"C:\your_path\Script_maya\build_trex.py"
 ```
 
 ---
@@ -70,7 +70,7 @@ python run_maya_script_from_vsc.py
 ```
 Attempting to connect to Maya (Port: 7001)...
 Connection successful!
-Reading script: 'i:\code_jenq\VSC_Maya\vscmayatest.py'
+Reading script: '...\build_trex.py'
 Sending script to Maya for execution...
 --- Script execution complete ---
 ```
@@ -83,9 +83,25 @@ Maya 視窗中會同步出現執行結果。
 
 | 檔案 | 用途 |
 |------|------|
-| `Script_maya/VSCmayaPort.py` | 在 Maya 內開啟 port 7001，每次啟動 Maya 必須先執行 |
+| `Script_maya/VSCmayaPort.py` | 在 Maya 內開啟 port 7001（Python 模式），每次啟動 Maya 必須先執行 |
 | `run_maya_script_from_vsc.py` | VSCode 端的傳送工具，修改 `SCRIPT_PATH` 指向目標腳本後執行 |
 | `vscmayatest.py` | 連線測試腳本，確認 VSCode → Maya 通道是否正常 |
+| `Script_maya/build_trex.py` | 範例：用 `maya.cmds` 建構暴龍多邊形模型 |
+
+---
+
+## 範例：建構暴龍模型
+
+`Script_maya/build_trex.py` 是一個完整範例，展示如何用 `maya.cmds` 的基本幾何體（polyCube、polySphere）組合出一隻 T-Rex。
+
+將 `SCRIPT_PATH` 指向此檔案後執行，Maya 場景中會出現 `T_Rex_GRP`，包含：
+
+- 身體、胸部、臀部
+- 頭部、頸部、頷骨、眼睛
+- 5 節漸細的尾巴
+- 迷你手臂與爪子
+- 大腿、小腿、腳掌與趾爪
+- 深橄欖綠 Lambert 材質
 
 ---
 
@@ -95,7 +111,10 @@ Maya 視窗中會同步出現執行結果。
 A: Maya 的 port 7001 尚未開啟。請回到 Step 1，在 Maya Script Editor 重新執行 `VSCmayaPort.py`。
 
 **Q: Maya 沒有反應但 VSCode 顯示成功？**  
-A: 檢查 `SCRIPT_PATH` 是否指向正確的檔案路徑，且檔案內容語法無誤。
+A: 確認 port 是以 **Python 模式**開啟（`sourceType='python'`）。若之前用 MEL 模式開過，需先關閉再重開。
+
+**Q: 出現 `UnicodeDecodeError: cp950`？**  
+A: 腳本內含 Unicode 特殊字元（如 `──`）。請改用純 ASCII 符號（如 `---`）。
 
 **Q: 重開 Maya 後又失效？**  
 A: 每次重新開啟 Maya 都必須重新執行 Step 1。可將 `VSCmayaPort.py` 的內容存入 Maya 的 **userSetup.py** 來自動化這個步驟。
@@ -132,8 +151,8 @@ import maya.utils as utils
 
 def open_command_port():
     if not cmds.commandPort(':7001', query=True):
-        cmds.commandPort(name=':7001', sourceType='mel', echoOutput=True)
-        print("Maya commandPort :7001 opened.")
+        cmds.commandPort(name=':7001', sourceType='python', echoOutput=True)
+        print("Maya commandPort :7001 opened (Python mode).")
 
 utils.executeDeferred(open_command_port)
 ```
