@@ -102,6 +102,26 @@ A: 每次重新開啟 Maya 都必須重新執行 Step 1。可將 `VSCmayaPort.py
 
 ---
 
+## Maya Stubs — VSCode 自動補全設定
+
+安裝 [maya-stubs](https://pypi.org/project/maya-stubs/) 後，在 VSCode 中撰寫 `maya.cmds` 時會有自動補全與型別提示。
+
+**下載位置：** `maya_stubs-0.4.2` 放在專案資料夾內
+
+在 `.vscode/settings.json` 加入以下設定（路徑改成你自己的位置）：
+
+```json
+{
+  "python.analysis.extraPaths": [
+    "I:\\code_jenq\\VSC_Maya\\maya_stubs-0.4.2\\maya_stubs-0.4.2\\src"
+  ]
+}
+```
+
+設定後如未立即生效，按 `Ctrl+Shift+P` → `Pylance: Restart Language Server`。
+
+---
+
 ## 自動化 Port 開啟（進階）
 
 將以下內容加入 Maya 的 `userSetup.py`（路徑通常在 `Documents/maya/2026/scripts/userSetup.py`），讓 Maya 每次啟動時自動開啟 port：
