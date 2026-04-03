@@ -1,0 +1,16 @@
+# Ignore video files (too large for git)
+*.mp4
+*.mov
+*.avi
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore VS Code settings (optional - remove if you want to share)
+.vscode/
+
+# Windows
+Thumbs.db
+desktop.ini
