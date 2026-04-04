@@ -8,22 +8,26 @@
 
 ```mermaid
 sequenceDiagram
+    autonumber
     actor User
-    participant VSCode
+    participant VS as VSCode
     participant Sender as run_maya_script_from_vsc.py
     participant Port as Maya commandPort :7001
     participant Maya as Maya 2026
 
-    User->>VSCode: 編寫 / 開啟 Python 腳本
+    Note over Port, Maya: 啟動 Maya 時執行 VSCmayaPort.py 開啟 Port
+
+    User->>VS: 編寫 / 開啟 Python 腳本
     User->>Sender: 設定 SCRIPT_PATH，執行 sender
-
-    Note over Port,Maya: 啟動 Maya 時先執行 VSCmayaPort.py 開啟 port
-
-    Sender->>Port: TCP Socket 連線 localhost:7001
+    
+    Sender->>Port: TCP Socket 連線 (localhost:7001)
     Port-->>Sender: Connection successful
+    
     Sender->>Port: 傳送 Python 腳本內容
     Port->>Maya: 執行腳本 (sourceType=python)
-    Maya-->>Sender: 回傳執行結果
+    
+    Maya-->>Port: 回傳執行結果
+    Port-->>Sender: 回傳 Response
     Sender-->>User: 顯示 Maya Response
 ```
 
